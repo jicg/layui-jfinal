@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>5D商圈</title>
+    <link rel="stylesheet" href="#(ctx_path)/static/admin/layui/css/modules/layer/default/layer.css">
+    <link rel="stylesheet" href="#(ctx_path)/static/css/jquery.fullPage.css">
+    <link rel="stylesheet" href="#(ctx_path)/static/css/index.css">
+    <style>
+        .logo {
+            background: url('#( ctx_path+ data["page.one.logo"].value ??)') no-repeat;
+            background-size: 25px 32px;
+            width: 25px;
+            height: 32px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<div class="app">
+    <div class="section">
+        <div class="masthead" style="overflow: hidden;">
+            <video class="masthead-video" autoplay="" loop="" muted=""
+                   style="position: absolute;top: 50%;left: 50%;
+                   -webkit-transform: translate(-50%, -50%);transform:
+                   translate(-50%, -50%);height: auto;width: 100%;">
+                <source src='#(ctx_path+data["page.one.video"].value ??)'>
+            </video>
+            <div class=masthead-overlay></div>
+        </div>
+        <div class="first-warp">
+            <div class="nav">
+                <div class="left-nav">
+                    <ul>
+                        <li><a href="#" class="logo"></a></li>
+                        <li><a href="#">#(data["page.one.title"].value ??)</a></li>
+                    </ul>
+                </div>
+                <div class="right-nav">
+                    <ul>
+                        <li><a target="_blank" href='#(data["page.one.nav1url"].value ??)'>#(data["page.one.nav1txt"].value
+                            ??)</a></li>
+                        <li class="logined">
+                            <a href="javascript:;" lay-img='#(ctx_path+data["page.one.nav2wxbarcode"].value ??)'
+                               lay-title='#(data["page.one.nav2title"].value ??)' onclick="show(this)">
+                                #(data["page.one.nav2txt"].value ??)
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="down-content">
+                <p style="text-align: center;">
+                    <img src='#(ctx_path+data["page.one.barcode"].value ??)' width="200">
+                </p>
+                <p class="down">
+                    <a target="_blank" href='#(data["page.one.actionurl"].value ??)'>
+                        <span class="store">#(data["page.one.actiontext"].value ??)</span>
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script src="#(ctx_path)/static/js/jquery-1.8.3.min.js"></script>
+<script src="#(ctx_path)/static/js/jquery.easing.min.js"></script>
+<script src="#(ctx_path)/static/js/jquery.fullPage.min.js"></script>
+<script src="#(ctx_path)/static/admin/layui/lay/modules/layer.js"></script>
+<script id="show-html" type="text/html">
+    <div style="text-align: center;">
+        <p>
+            <img width="400px" id="show-img-id" src="" width="200">
+        </p>
+        <p style="font-size: 28px;line-height: 60px;color: black;">
+            <span id="show-title-id">体验5D商圈</span>
+        </p>
+    </div>
+</script>
+<script>
+    $(document).ready(function () {
+        $(".app").fullpage({
+            'verticalCentered': false,
+            'navigation': true,
+            slidesColor: ['#1bbc9b'],
+            anchors: ['page1']
+        });
+    });
+    function show(obj) {
+        var imgurl = $(obj).attr("lay-img");
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: 0
+            , area: ['400px', '480px']
+            , shade: 0.8,
+            shadeClose: true,
+            content: $("#show-html").html()
+        });
+        $("#show-img-id").attr('src', imgurl);
+        $("#show-title-id").html($(obj).attr("lay-title") || "");
+    }
+</script>
+</body>
+</html>

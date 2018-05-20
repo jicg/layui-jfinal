@@ -1,0 +1,42 @@
+<div style="padding: 20px;">
+    <form class="layui-form" action="">
+        <input type="hidden" name="id" value="{{ d.id}}">
+        <div class="layui-form-item">
+            <label class="layui-form-label">名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="name" lay-verify="required"
+                       value="{{ d.name}}" placeholder="请输入名称" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">值</label>
+            <div class="layui-input-inline">
+                <input type="text" name="action"
+                       value="{{ d.value}}" lay-verify="required" placeholder="请输入值" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="" lay-filter="addWebSiteOne">
+                    #[[
+                    {{# if(d.id === -1){}}新增{{# } }}
+                    {{# if(d.id !== -1){}}修改{{# } }}
+                    ]]#
+                </button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+<style>
+    .layui-form-label {
+        width: 30px;
+    }
+
+    .layui-input-block {
+        margin-left: 60px;
+    }
+</style>

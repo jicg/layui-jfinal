@@ -1,0 +1,14 @@
+<ul class="layui-nav layui-nav-tree" lay-filter="side">
+    #for(m : sideMeens)
+    <li class="layui-nav-item layui-nav-itemed">
+        <a class="" href="javascript:;">#(m.mean.name)</a>
+        <dl class="layui-nav-child">
+            #for(ms : m.children)
+            <dd>
+                <a href="javascript:;" lay-href="#(ms.action)">#(ms.name)</a>
+            </dd>
+            #end
+        </dl>
+    </li>
+    #end
+</ul>

@@ -1,0 +1,306 @@
+<div>
+    <div class="my-btn-box">
+        <span class="fl">
+            <a class="layui-btn btn-add btn-default" id="btn-add"><i class="layui-icon">&#xe654;</i>添加</a>
+        </span>
+    </div>
+    <table id="dataTable" class="layui-table layui-form" lay-filter="list"></table>
+</div>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="visit">查看</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script type="text/html" id="addWebSiteOne">
+    <div style="padding: 20px;padding-bottom: 40px;">
+        <form class="layui-form" action="">
+            <input type="hidden" name="id" value="{{ d.id}}">
+            <div class="layui-form-item">
+                <label class="layui-form-label">名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="name" lay-verify="required"
+                           #[[
+                           {{# if(d.id !== -1){}}disabled{{# } }}
+                           ]]#
+                           value="{{ d.name}}" placeholder="请输入名称" autocomplete="off"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label style="padding:0px;padding-right:15px;padding-left: 15px;"
+                       class="layui-form-label" lay-ignore>类别
+                </label>
+                <div class="layui-input-inline">
+                    <select id="add-datatype-select" name="datatype" lay-ignore>
+                        <option value="0" selected="">文本</option>
+                        <option value="1">图片</option>
+                        <option value="2">视频</option>
+                        <option value="3">声音</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="add-value-item2" class="layui-form-item">
+                <label class="layui-form-label">值</label>
+                <div id="add-value-html" class="layui-input-inline">
+                </div>
+            </div>
+
+            <div id="add-value-item" class="layui-form-item">
+                <label class="layui-form-label">值</label>
+                <div class="layui-input-inline">
+                    <input id="add-value-value" type="text" name="value" value="{{ d.value}}" lay-verify="required"
+                           placeholder="请输入值"
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">备注</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="remark" value="{{ d.remark}}"
+                           placeholder="请输入备注"
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit="" lay-filter="addWebSiteOne">
+                        #[[
+                        {{# if(d.id === -1){}}新增{{# } }}
+                        {{# if(d.id !== -1){}}修改{{# } }}
+                        ]]#
+                    </button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <style>
+        .layui-form-label {
+            width: 30px;
+        }
+
+        .layui-input-block {
+            margin-left: 60px;
+        }
+    </style>
+</script>
+<script id="addvaluehtml1" type="text/html">
+    <button type="button" class="layui-btn" id="test1">
+        <i class="layui-icon">&#xe67c;</i>上传图片
+    </button>
+</script>
+<script id="addvaluehtml2" type="text/html">
+    <button type="button" class="layui-btn" id="test5"><i class="layui-icon"></i>上传视频</button>
+</script>
+<script id="addvaluehtml3" type="text/html">
+    <button type="button" class="layui-btn" id="test6"><i class="layui-icon"></i>上传音频</button>
+</script>
+<script type="text/html" id="datatypeTpl">
+    #[[
+    {{# if(d.datatype === 0){}}文本{{# } }}
+    {{# if(d.datatype === 1){}}图片{{# } }}
+    {{# if(d.datatype === 2){}}视频{{# } }}
+    {{# if(d.datatype === 3){}}声音{{# } }}
+    ]]#
+</script>
+<script>
+    layui.use(['element', 'form', 'layer', 'table', 'comm', 'laytpl', 'upload'], function () {
+        var $ = layui.$,
+                form = layui.form,
+                table = layui.table,
+                layer = layui.layer,
+                comm = layui.comm,
+                laytpl = layui.laytpl,
+                upload = layui.upload,
+                tpladdWebSiteOne = $('#addWebSiteOne').html(),
+                meanobjtpl = laytpl(tpladdWebSiteOne),
+                addvaluehtml = [
+                    '',
+                    $('#addvaluehtml1').html(),
+                    $('#addvaluehtml2').html(),
+                    $('#addvaluehtml3').html()
+                ],
+                eventAction = [
+                    function () {
+
+                    },
+                    function () {
+                        var uploadInst = upload.render({
+                            elem: '#test1'
+                            , url: 'admin/upload/img'
+                            , done: function (res) {
+                                if (res.code > 0) {
+                                    return comm.sayError(res.msg);
+                                } else {
+                                    comm.sayOk(res.msg)
+                                    $("#add-value-value").val(res.data.src);
+                                }
+                            }
+                        });
+                    },
+                    function () {
+                        upload.render({
+                            elem: '#test5'
+                            , url: 'admin/upload/video'
+                            , accept: 'video' //视频
+                            , done: function (res) {
+                                if (res.code > 0) {
+                                    return comm.sayError(res.msg);
+                                } else {
+                                    comm.sayOk(res.msg)
+                                    $("#add-value-value").val(res.data.src);
+                                }
+                            }
+                        });
+                    },
+                    function () {
+                        upload.render({
+                            elem: '#test6'
+                            , url: 'admin/upload/audio'
+                            , accept: 'audio' //音频
+                            , done: function (res) {
+                                if (res.code > 0) {
+                                    return comm.sayError(res.msg);
+                                } else {
+                                    comm.sayOk(res.msg)
+                                    $("#add-value-value").val(res.data.src);
+                                }
+                            }
+                        });
+                    }
+                ],
+                index = null;
+        var mytable = table.render({
+            elem: '#dataTable'
+            , url: 'admin/website/one/list'
+            , cols: [[
+                {field: 'id', title: 'ID'}
+                , {field: 'name', title: '名称'}
+                , {field: 'value', title: '值'}
+                , {field: 'datatype', title: '类别', templet: '#datatypeTpl'}
+                , {field: 'remark', title: '备注'}
+                , {fixed: 'right', align: 'center', toolbar: '#barDemo'}
+            ]]
+            , limit: 300
+            , page: false
+        });
+
+        table.on('tool(list)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'visit') {
+                visit(data);
+            } else if (obj.event === 'del') {
+                layer.confirm('真的删除行么', function (index) {
+                    layer.close(index);
+                    comm.post(
+                            "admin/website/one/del",
+                            {id: data.id}
+                    ).success(function (ret) {
+                        comm.sayOk(ret.msg);
+                        obj.del();
+                    }).run();
+                });
+            } else if (obj.event === 'edit') {
+                meanobjtpl.render(data,
+                        function (html) {
+                            index = layer.open({
+                                title: "修改参数\"" + data.name + "\"",
+                                type: 1,
+                                anim: 0,
+                                shadeClose: true,
+                                skin: 'layui-layer-demo',
+                                content: html
+                            });
+                            openRender(data);
+                        }
+                );
+            }
+        });
+
+
+        $("#btn-add").click(function () {
+            var data = {
+                id: -1,
+                name: "",
+                value: "",
+                remark: "",
+                datatype: 0
+            };
+            meanobjtpl.render(data,
+                    function (html) {
+                        index = layer.open({
+                            title: "添加参数",
+                            type: 1,
+                            anim: 0,
+                            shadeClose: true,
+                            skin: 'layui-layer-demo',
+                            content: html
+                        });
+                        openRender(data)
+                    }
+            );
+        });
+
+
+        function openRender(data) {
+            var datatype = data.datatype || 0;
+            if (datatype > 0) {
+                $("#add-value-item").hide();
+                $("#add-value-item2").show();
+            } else {
+                $("#add-value-item").show();
+                $("#add-value-item2").hide();
+            }
+            $("#add-datatype-select").change(function () {
+                var v = $(this).children('option:selected').val() || 0;
+                $("#add-value-html").html(addvaluehtml[v]);
+                eventAction[v] && eventAction[v]();
+                if (v > 0) {
+                    $("#add-value-item").hide();
+                    $("#add-value-item2").show();
+                } else {
+                    $("#add-value-item").show();
+                    $("#add-value-item2").hide();
+                }
+            });
+            $("#add-datatype-select").val(datatype);
+            $("#add-datatype-select").change();
+        }
+
+        function visit(data) {
+            var html = "";
+            if (data.datatype == 0) {
+                html = "<div style='padding: 20px;min-width: 300px;min-height: 200px;'>" + data.value + "</div>";
+            } else if (data.datatype == 1) {
+                html = "<img width='360px'  src=" + "#(ctx_path)" + data.value + ">";
+            } else if (data.datatype == 2) {
+                html = "<video width='360px' src=" + "#(ctx_path)" + data.value + " loop=\"loop\" autoplay=\"autoplay\"></video>";
+            } else if (data.datatype == 3) {
+                html = "<div style='padding: 20px;min-width: 300px;min-height: 200px;'><audio src='" + "#(ctx_path)" + data.value + "' controls=\"controls\">您的浏览器不支持 audio 标签。 </audio></div>";
+            }
+            layer.open({
+                title: "查看",
+                type: 1,
+                anim: 0,
+                shadeClose: true,
+                skin: 'layui-layer-demo',
+                content: html
+            });
+        }
+
+        form.on('submit(addWebSiteOne)', function (data) {
+            comm.post(
+                    "admin/website/one/add",
+                    data.field
+            ).success(function (ret) {
+                comm.sayOk(ret.msg);
+                layer.close(index);
+                mytable.reload();
+            }).run();
+            return false;
+        })
+    })
+</script>

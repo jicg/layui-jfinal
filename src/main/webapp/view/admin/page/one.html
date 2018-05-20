@@ -1,0 +1,57 @@
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+    <legend>常规使用：普通图片上传</legend>
+</fieldset>
+
+<div class="layui-upload">
+    <button type="button" class="layui-btn" id="test1">上传图片</button>
+    <div class="layui-upload-list">
+        <img class="layui-upload-img" id="demo1">
+        <p id="demoText"></p>
+    </div>
+</div>
+
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+    <legend>指定允许上传的文件类型</legend>
+</fieldset>
+<button type="button" class="layui-btn" id="test5">
+    <i class="layui-icon"></i>上传视频
+</button>
+
+<script>
+    layui.use(['upload', 'jquery', 'element', 'form', 'layer','comm'], function () {
+        var upload = layui.upload,
+                $ = layui.jquery;
+        upload.render({
+            elem: '#test5'
+            , url: '/upload/'
+            , accept: 'video' //视频
+            , done: function (res) {
+                console.log(res)
+            }
+        });
+        var uploadInst = upload.render({
+            elem: '#test1'
+            , url: '/upload/'
+            , before: function (obj) {
+                obj.preview(function (index, file, result) {
+                    $('#demo1').attr('src', result); //图片链接（base64）
+                });
+            }
+            , done: function (res) {
+                //如果上传失败
+                if (res.code > 0) {
+                    return comm;
+                }
+                //上传成功
+            }
+            , error: function () {
+                //演示失败状态，并实现重传
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function () {
+                    uploadInst.upload();
+                });
+            }
+        });
+    })
+</script>

@@ -1,0 +1,30 @@
+.my-btn-box {
+    height: 38px;
+    margin-bottom: 10px;
+}
+
+.my-pay-box > div p {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+/* tools */
+.fl {
+    float: left;
+}
+
+.fr {
+    float: right;
+}
+
+.none {
+    display: none;
+}
+
+.block {
+    display: block;
+}
+
+.red {
+    color: red;
+}

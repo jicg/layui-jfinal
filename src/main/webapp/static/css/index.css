@@ -1,0 +1,126 @@
+@font-face {
+    font-family: 'PingHei';
+    font-style: normal;
+    font-weight: normal;
+    src: local('☺︎'), url("../../static/fonts/PingHei-light.woff") format("woff")
+}
+
+
+.first-warp, .sec-warp, .three-warp, .four-warp, .five-warp, .six-warp {
+    position: relative;
+    width: 1000px;
+    height: 100%;
+    margin: 0 auto;
+}
+
+.nav {
+    position: relative;
+    width: 1024px;
+    margin: 0 auto;
+    top: 30px;
+    font-size: 20px;
+}
+
+body {
+    padding: 0px;
+    color: white;
+    background: #1bbc9b;
+    font-family: "PingHei", "微软雅黑", "Lucida Sans Unicode", "Helvetica", "Arial", "Verdana", "sans-serif";
+}
+
+h1, h2, h3, h4, h5, h6, p, pre, blockquote, form, ul, ol, dl {
+    margin: 0;
+}
+
+li, dd, blockquote {
+    margin: 0px;
+}
+
+li {
+    list-style: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+a:link {
+    color: white;
+    text-decoration: none;
+}
+
+a:visited {
+    color: white
+}
+
+a:hover {
+    color: white
+}
+
+a:active {
+    color: white
+}
+
+.left-nav ul li {
+    float: left;
+    height: 32px;
+    line-height: 32px;
+    padding-left: 10px;
+}
+
+.right-nav {
+    float: right;
+    padding: 10px 0px;
+}
+
+.right-nav ul li {
+    float: left;
+    height: 25px;
+    line-height: 25px;
+    padding: 0px 20px;
+    border-left: 1px solid white;
+}
+
+.right-nav ul li:first-child {
+    border-left: none;
+}
+
+.down-content {
+    position: absolute;
+    width: 300px;
+    top: 35%;
+    left: 37%;
+    opacity: 0;
+    transition: all 1s;
+}
+
+.active .down-content {
+    left: 60%;
+    opacity: 1;
+    transition-delay: 1s;
+}
+
+.down-content p {
+    margin-bottom: 15px;
+}
+
+.down a {
+    display: block;
+    text-align: center;
+    width: 200px;
+    height: 40px;
+    font-size: 16px;
+    line-height: 40px;
+    border-radius: 25px;
+    border: 2px solid white;
+    margin-left: 45px;
+}
+
+.down a:visited {
+}
+
+.down a:hover {
+    color: #1bbc9b;
+    background: white;
+}

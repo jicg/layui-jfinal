@@ -1,0 +1,175 @@
+<div>
+    <div class="my-btn-box">
+    <span class="fl">
+        <a class="layui-btn btn-add btn-default" id="btn-add-mean">
+            <i class="layui-icon">&#xe654;</i>添加
+        </a>
+    </span>
+
+    </div>
+
+    <table id="treeTable" class="layui-table layui-form" lay-filter="meanlist"></table>
+</div>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="add">新增</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script type="text/html" id="addMean">
+    <div style="padding: 20px;">
+        <form class="layui-form" action="">
+            <input type="hidden" name="id" value="{{ d.id}}">
+            <input type="hidden" name="pid" value="{{ d.pid}}">
+            <div class="layui-form-item">
+                <label class="layui-form-label">名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="name" lay-verify="required"
+                           value="{{ d.name}}" placeholder="请输入名称" autocomplete="off"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">Url</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="action"
+                           value="{{ d.action}}" lay-verify="required" placeholder="请输入Url" autocomplete="off"
+                           class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit="" lay-filter="addMean">
+                        #[[
+                        {{# if(d.id === -1){}}新增{{# } }}
+                        {{# if(d.id !== -1){}}修改{{# } }}
+                        ]]#
+                    </button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <style>
+        .layui-form-label {
+            width: 30px;
+        }
+
+        .layui-input-block {
+            margin-left: 60px;
+        }
+    </style>
+</script>
+<script>
+    layui.use(['element', 'form', 'layer', 'table', 'treeGrid', 'comm', 'laytpl'], function () {
+        var treeGrid = layui.treeGrid,
+                $ = layui.$,
+                form = layui.form,
+                layer = layui.layer,
+                comm = layui.comm,
+                laytpl = layui.laytpl,
+                index = null;
+        var treeTable = treeGrid.render({
+            elem: '#treeTable'
+            , id: 'treeTable'
+            , levelField: 'level'
+            , paramName: 'pid'
+            , paramValue: 'id'
+            , scopeField: 'name'
+            , url: 'admin/sys/mean/list'
+            , cols: [[
+                {field: 'name', title: '名称'}
+                , {field: 'action', title: 'URL'}
+                , {fixed: 'right', align: 'center', toolbar: '#barDemo'}
+            ]]
+            , limit: 300
+            , page: false
+        });
+        treeGrid.on('tool(meanlist)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'add') {
+                if (data.level == 3) {
+                    comm.sayError('最多三级菜单');
+                    return;
+                }
+                var d = {
+                    id: -1,
+                    action: "",
+                    name: ""
+                };
+                d.pid = data.id;
+                d.pname = data.name;
+                meanobjtpl.render(d,
+                        function (html) {
+                            index = layer.open({
+                                title: "为\"" + data.name + "\"" + "添加子菜单",
+                                type: 1,
+                                anim: 0,
+                                shadeClose: true,
+                                skin: 'layui-layer-demo',
+                                content: html
+                            });
+                        }
+                );
+            } else if (obj.event === 'del') {
+                layer.confirm('真的删除行么', function (index) {
+                    layer.close(index);
+                    comm.post(
+                            "admin/sys/mean/del",
+                            {id: data.id}
+                    ).success(function (ret) {
+                        comm.sayOk(ret.msg);
+                        obj.del();
+                    }).run();
+                });
+            } else if (obj.event === 'edit') {
+                meanobjtpl.render(data,
+                        function (html) {
+                            index = layer.open({
+                                title: "修改菜单\"" + data.name + "\"",
+                                type: 1,
+                                anim: 0,
+                                shadeClose: true,
+                                skin: 'layui-layer-demo',
+                                content: html
+                            });
+                        }
+                );
+            }
+        });
+        var tpladdMean = $('#addMean').html();
+
+
+        var meanobjtpl = laytpl(tpladdMean);
+        $("#btn-add-mean").click(function () {
+            meanobjtpl.render({
+                        pid: 0,
+                        id: -1,
+                        action: "",
+                        name: ""
+                    },
+                    function (html) {
+                        index = layer.open({
+                            title: "添加顶级菜单",
+                            type: 1,
+                            anim: 0,
+                            shadeClose: true,
+                            skin: 'layui-layer-demo',
+                            content: html
+                        });
+                    }
+            );
+        });
+        form.on('submit(addMean)', function (data) {
+            comm.post(
+                    "admin/sys/mean/add",
+                    data.field
+            ).success(function (ret) {
+                comm.sayOk(ret.msg);
+                layer.close(index);
+                treeTable.reload();
+            }).run();
+            return false;
+        })
+    })
+</script>
