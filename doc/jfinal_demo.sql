@@ -11,7 +11,7 @@
  Target Server Version : 50715
  File Encoding         : 65001
 
- Date: 20/05/2018 09:34:21
+ Date: 24/05/2018 09:28:56
 */
 
 SET NAMES utf8mb4;
@@ -74,7 +74,7 @@ CREATE TABLE `user` (
 -- Records of user
 -- ----------------------------
 BEGIN;
-INSERT INTO `user` VALUES (1, 'admin', '123123', 'jicg@qq.com', NULL, 0);
+INSERT INTO `user` VALUES (1, 'admin', '123123', 'admin@qq.com', NULL, 0);
 INSERT INTO `user` VALUES (2, 'xia', '123123', 'xia@qq.com', NULL, 0);
 COMMIT;
 
@@ -97,18 +97,18 @@ CREATE TABLE `website_data` (
 -- Records of website_data
 -- ----------------------------
 BEGIN;
-INSERT INTO `website_data` VALUES (1, 'page.one.welcome', '你好，12', 1, 0, '测试数据');
+INSERT INTO `website_data` VALUES (1, 'page.one.welcome', '你好，夏总12', 1, 0, '测试数据');
 INSERT INTO `website_data` VALUES (2, 'page.one.logo', '/upload/image/1523349727253-QQ20180123-205105@2x.png', 1, 1, '首页左侧logo');
 INSERT INTO `website_data` VALUES (3, 'page.one.video', '/upload/video/1523350932809-5645997a2eb5e.mp4', 1, 2, '首页背景视频');
 INSERT INTO `website_data` VALUES (5, 'page.one.sound', '/upload/audio/1523353378296-6473.mp3', 1, 3, '测试数据');
 INSERT INTO `website_data` VALUES (6, 'page.one.barcode', '/upload/image/1523365089889-wpay.png', 1, 1, '首页右侧二维码图片');
 INSERT INTO `website_data` VALUES (7, 'page.one.title', '拥有属于自己更多的财富', 1, 0, '首页左侧logo标题');
-INSERT INTO `website_data` VALUES (8, 'page.one.actionurl', 'http://www.baidu.com', 1, 0, '首页右侧二维码下的文字链接');
+INSERT INTO `website_data` VALUES (8, 'page.one.actionurl', 'http://www.5dsq.com/', 1, 0, '首页右侧二维码下的文字链接');
 INSERT INTO `website_data` VALUES (9, 'page.one.actiontext', '体验5D商圈', 1, 0, '首页右侧二维码下的文字');
 INSERT INTO `website_data` VALUES (10, 'page.one.nav1txt', '体验5D商圈', 1, 0, '右侧导航1-标题');
-INSERT INTO `website_data` VALUES (11, 'page.one.nav1url', 'http://www.baidu.com', 1, 0, '右侧导航1-链接');
+INSERT INTO `website_data` VALUES (11, 'page.one.nav1url', 'http://www.5dsq.com/', 1, 0, '右侧导航1-链接');
 INSERT INTO `website_data` VALUES (12, 'page.one.nav2txt', '关注二维码', 1, 0, '右侧导航2-标题');
-INSERT INTO `website_data` VALUES (13, 'page.one.nav2wxbarcode', '/upload/image/1523365720244-wpay.png', 1, 1, '右侧导航2-弹框二维码图片');
+INSERT INTO `website_data` VALUES (13, 'page.one.nav2wxbarcode', '/upload/image/1527125184044-QQ20180524-0.png', 1, 1, '右侧导航2-弹框二维码图片');
 INSERT INTO `website_data` VALUES (14, 'page.one.nav2title', '欢迎关注公众号', 1, 0, '右侧导航2-弹框二维码标题');
 COMMIT;
 
